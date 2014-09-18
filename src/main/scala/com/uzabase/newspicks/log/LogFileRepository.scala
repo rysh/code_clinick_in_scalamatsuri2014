@@ -18,8 +18,10 @@ object LogFileRepository extends Logging {
 
     def search(file: File): List[Path] = {
       if (file.isDirectory()) {
-        val list = file.listFiles().map(f => search(f))
-        List.fromArray(list.flatten)
+       for { 
+          f <- file.listFiles.toList
+          path <- search(f)
+        } yield path                      
       } else if (file.getName().startsWith("ip-")) {
         List(file.toPath())
       } else {
