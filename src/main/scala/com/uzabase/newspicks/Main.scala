@@ -8,23 +8,21 @@ import com.uzabase.newspicks.user.DummyUser
 
 object Main extends App with CmdLineArgs with Logging {
   parser.parse(args, Config()) match {
-    case Some(config)  => {
-      if (config.isUser) {
-        //Dummyのユーザを登録する
+    case Some(config)  => 
+      if (config.isUser) 
+        // Regidter dummy user
         DummyUser.createDummyUser(config)
-      } else if (config.isLog && config.isAws) {
-        //AWSから取り込む
+       else if (config.isLog && config.isAws) 
+        // Load from AWS
         LogFileRepository
           .loadFromS3(config)
           .createIndex(config)
-      } else {
-        //何も指定しなければDIR以下のファイルを読み込む
+       else 
+        // If nothing is specified, then read files in DIR
         LogFileRepository
           .load(config)
           .createIndex(config)
-      }
       logger.info("Complete Successfully !!!")
-    }
     case None => // nop
   }
 }
