@@ -1,0 +1,79 @@
+{
+    "mappings": {
+        "log": {
+            "_parent" : {
+                "type" : "user"
+            },
+            "properties": {
+                "uid": {
+                    "type": "integer"
+                },
+                "protocol": {
+                    "type": "string"
+                },
+                "host": {
+                    "type": "string"
+                },
+                "cache": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "integer"
+                },
+                "reqtime": {
+                    "type": "double"
+                },
+                "runtime": {
+                    "type": "string"
+                },
+                "uri": {
+                    "type": "string",
+                    "analyzer": "simple"
+                },
+                "reqsize": {
+                    "type": "integer"
+                },
+                "size": {
+                    "type": "integer"
+                },
+                "timestamp": {
+                    "format": "dateOptionalTime",
+                    "type": "date"
+                },
+                "apptime": {
+                    "type": "double"
+                },
+                "vhost": {
+                    "type": "string"
+                },
+                "ua": {
+                    "type": "string"
+                },
+                "method": {
+                    "type": "string",
+                    "index": "not_analyzed"
+                },
+                "referer": {
+                    "type": "string"
+                },
+                "req": {
+                    "type": "string"
+                },
+                "user": {
+                    "type": "string"
+                }
+            }
+        },
+        "user": {
+            "properties": {
+                "uid": {
+                    "type": "integer"
+                },
+                "start_date": {
+                    "format": "dateOptionalTime",
+                    "type": "date"
+                }
+            }
+        }
+    }
+}

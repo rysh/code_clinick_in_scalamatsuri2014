@@ -1,0 +1,57 @@
+#!/bin/sh
+#
+
+# Source function library.
+. /etc/rc.d/init.d/functions
+
+# Source networking configuration.
+. /etc/sysconfig/network
+export JAVA_HOME=/usr/local/java
+export ELASTIC_SEARCH_HOME=/usr/local/elasticsearch
+
+# See how we were called.
+case "$1" in
+    start)
+        # Start daemons.
+        if [ -f /var/lock/subsys/elasticsearch ] ; then
+            echo "elasticsearch already started!"
+            exit 1
+        fi
+        echo "Starting elasticsearch ... "
+        nohup $ELASTIC_SEARCH_HOME/bin/elasticsearch > /dev/null 2>&1 &
+        echo "elasticseach started !"
+        sleep 1
+        RETVAL=$?
+        echo
+        [ $RETVAL = 0 ] && touch /var/lock/subsys/elasticsearch
+        ;;
+    stop)
+        # Stop daemons.
+        if [ ! -f /var/lock/subsys/elasticsearch ] ; then
+            echo "elasticsearch already stopped!"
+            exit 1
+        fi
+        echo "Stopping elasticsearch ... "
+        kill -9 `ps -ef | grep [e]lasticsearch | grep [/]usr/local/elasticsearch | awk '{print $2}'` 
+        echo "elasticsearch stopped !"
+        RETVAL=$?
+        echo
+        [ $RETVAL = 0 ] && rm -f /var/lock/subsys/elasticsearch
+        ;;
+    status)
+        status elasticsearch
+        exit $?
+        ;;
+    restart)
+        $0 stop
+        $0 start
+        ;;
+    *)
+        echo "Usage: $ELASTIC_SEARCH_PROG {start|stop|status|restart}"
+        exit 1
+esac
+
+exit 0
+
+
+
