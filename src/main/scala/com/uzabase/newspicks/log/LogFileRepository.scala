@@ -16,18 +16,15 @@ object LogFileRepository extends Logging {
 
   def load(implicit config: Config): NewsPicksLogFiles = {
 
-    def search(file: File): List[Path] = {
-      if (file.isDirectory()) {
+    def search(file: File): List[Path] = 
+      if (file.isDirectory()) 
        for { 
           f <- file.listFiles.toList
           path <- search(f)
         } yield path                      
-      } else if (file.getName().startsWith("ip-")) {
+      else if (file.getName().startsWith("ip-")) 
         List(file.toPath())
-      } else {
-        List()
-      }
-    }
+      else Nil
 
     new NewsPicksLogFiles(search(config.file.get.toFile).map(p => new LocalLogFile(p)))
   }
